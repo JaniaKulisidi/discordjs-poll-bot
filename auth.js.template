@@ -1,0 +1,5 @@
+var vars = {};
+
+vars.TOKEN = "DISCORD_TOKEN_HERE";
+
+module.exports = vars;

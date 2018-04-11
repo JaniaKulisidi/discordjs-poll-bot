@@ -1,0 +1,27 @@
+{
+  "name": "discordjs-poll-bot",
+  "version": "1.0.0",
+  "description": "A discord.js poll bot.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdeurt/discordjs-poll-bot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "polls"
+  ],
+  "author": "Juan \"sharky\" de Urtubey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jdeurt/discordjs-poll-bot/issues"
+  },
+  "homepage": "https://github.com/jdeurt/discordjs-poll-bot#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  }
+}
