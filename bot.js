@@ -38,7 +38,7 @@ function startPoll(msg, title, options = []) {
     options.forEach((o, i) => {
         eDesc += `[${i+1}] ${o}\n`;
     });
-    e.setTitle(title).setDescription("\`\`\`" + eDesc + "\`\`\`");
+    e.setTitle(title).setDescription("\`\`\`" + eDesc + "\`\`\`").setFooter("Vote with //#");
     msg.channel.send({embed: e});
 }
 function stopPoll(msg) {
@@ -82,12 +82,44 @@ bot.on("message", msg => {
         stopPoll(msg);
         console.log("stopped poll");
     }
+    else if(msg.guild.member(msg.author.id).hasPermission("VIEW_AUDIT_LOG") && cmd.includes("status")) {
+        let active = "No poll currently active.";
+        if(polls[msg.guild.id])
+            if(polls[msg.guild.id].listening)
+                active = "Poll active: "+polls[msg.guild.id].title;
+        let e = new Discord.RichEmbed();
+        e.setTitle("Poll Status").setDescription(active);
+        if(active.startsWith("Poll active")) {
+            let total = 0;
+            polls[msg.guild.id].count.forEach(v => {
+                total += v;
+            });
+            let percentages = [];
+            polls[msg.guild.id].count.forEach(v => {
+                percentages.push(Math.round(v/total*10));
+            });
+            let graph =  "```Perl";
+            for(let layer = 0; layer < 10; layer++) {
+                percentages.forEach(p => {
+                    if(p > 9-layer) graph += "█ ";
+                    else if(p == 0 && layer == 9) graph += "_ ";
+                    else graph += "  ";
+                });
+                graph += "\n";
+            }
+            percentages.forEach((p, i) => {
+                graph += i+1 + " ";
+            });
+            graph += "```";
+            e.addField("Votes", graph);
+        }
+    }
     else if(polls[msg.guild.id])
         if(polls[msg.guild.id].listening)
             parseVote(msg);
         else err = true;
     else err = true;
-    if(err) msg.channel.send(`\`${cmd}\` is either not a valid command or had been used incorrectly.`);
+    if(err) msg.channel.send(`\`${cmd}\` is either not a valid command or has been used incorrectly.`);
 });
 
 bot.login(auth.TOKEN);
