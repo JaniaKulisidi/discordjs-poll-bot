@@ -113,6 +113,7 @@ bot.on("message", msg => {
             graph += "```";
             e.addField("Votes", graph);
         }
+        msg.channel.send({embed: e});
     }
     else if(polls[msg.guild.id])
         if(polls[msg.guild.id].listening)
